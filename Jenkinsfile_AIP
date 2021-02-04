@@ -38,6 +38,7 @@ stages {
 	stage('check_build_version'){
 			       steps {
 			                  container('gradle') {
+					          
 			                       /* $versionLine = (Get-Content build.gradle) -match "version\s*=\s*'\s*(\d+)\.(\d)+"
                                                  "$versionLine" -match "version\s*=\s*'\s*(\d+)\.(\d)+"
                                                   $major = $matches[1]
@@ -51,7 +52,17 @@ stages {
                                                   git tag "$tag"
                                                   git remote add origin http://${bamboo.git.user}:${bamboo.git.password}@${bamboo.git.url}
                                                   git push origin "$tag" */
-						  }
+						  
+					  
+					  /*     $versionLine = (Get-Content build.gradle) -match "version\s*=\s*'\s*(\d+)\.(\d)+"
+                                                "$versionLine" -match "version\s*=\s*'\s*(\d+)\.(\d)+"
+                                                 $major = $matches[1]
+                                                 $minor = $matches[2]
+                                                "$major.$minor"
+                                                 (Get-Content buildVersion.txt) | foreach-object {$_ -replace "BUILD_VERSION", "$major.$minor.${bamboo.buildNumber}"} | set-content buildVersion.txt
+						 
+				         */		
+					    }
 				         }
 			}
 	stage('Code Quality') {
@@ -179,6 +190,9 @@ stages {
 	}    
   }
   post {
+          always {
+		javadoc(javadocDir: '/home/jenkins/agent/workspace/Sandbox/EJB_test/target/site/apidocs', keepAll: true)
+	}
         failure {
             /*mail bcc: '', 
             	 body: "<b>Example</b><br>\n<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", 
