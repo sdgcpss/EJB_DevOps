@@ -35,6 +35,25 @@ stages {
 			}
 		}
 	}
+	stage('check_build_version'){
+			       steps {
+			                  container('gradle') {
+			                       /* $versionLine = (Get-Content build.gradle) -match "version\s*=\s*'\s*(\d+)\.(\d)+"
+                                                 "$versionLine" -match "version\s*=\s*'\s*(\d+)\.(\d)+"
+                                                  $major = $matches[1]
+                                                  $minor = $matches[2]
+                                                  $gitStatus = (git status) -match "On branch"
+                                                 "$gitStatus" -match "On branch\s*(\w+)"
+                                                  $branch = $matches[1]
+
+                                                  $tag = "$branch-${bamboo.planKey}-$major.$minor.${bamboo.buildNumber}${bamboo.repository.branch.name}"
+
+                                                  git tag "$tag"
+                                                  git remote add origin http://${bamboo.git.user}:${bamboo.git.password}@${bamboo.git.url}
+                                                  git push origin "$tag" */
+						  }
+				         }
+			}
 	stage('Code Quality') {
 		steps {
 			container('gradle') {
